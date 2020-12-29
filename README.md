@@ -238,7 +238,8 @@ iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j SNAT --to-source 10.
 
 2. Drop semua akses SSH yang berasal dari luar topologi pada server yang memiliki IP DMZ, iptables diatur di SURABAYA.
 ~~~
-
+iptables -A FORWARD -i eth0 -d 10.151.79.130 -p tcp --destination-port 22 -j DROP
+iptables -A FORWARD -i eth0 -d 10.151.79.131 -p tcp --destination-port 22 -j DROP
 ~~~
 
 3. DHCP dan DNS Server hanya boleh menerima 3 koneksi ICMP secara bersamaan yang berasal dari mana saja dan selebihnya di DROP, iptables diatur di masing-masing server.
