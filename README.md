@@ -86,58 +86,135 @@ uml_mconsole GRESIK halt
 | A04  | 192.168.2.2 - 192.168.2.11  | 255.255.255.0 |
 | A05  | 192.168.0.8 | 255.255.255.248 |
 
-5. Mengatur konfigurasi interface pada masing-masing UML.
+5. Mengatur konfigurasi interface pada masing-masing UML, kemudian lakukan `service networking restart` pada Router dan Server.
 - SURABAYA (*Router*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 10.151.78.66
+netmask 255.255.255.252
+gateway 10.151.78.65
 
+auto eth1
+iface eth1 inet static
+address 192.168.0.5
+netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+address 192.168.6.1
+netmask 255.255.255.252
 ~~~
 
 - KEDIRI (*Router*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 192.168.0.6
+netmask 255.255.255.252
+gateway 192.168.0.5
+
+auto eth1
+iface eth1 inet static
+address 192.168.0.9
+netmask 255.255.255.248
+
+auto eth2
+iface eth2 inet static
+address 192.168.2.1
+netmask 255.255.255.0
 ~~~
 
 - BATU (*Router*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 192.168.6.2
+netmask 255.255.255.252
+gateway 192.168.6.1
+
+auto eth1
+iface eth1 inet static
+address 10.151.79.129
+netmask 255.255.255.248
+
+auto eth2
+iface eth2 inet static
+address 192.168.1.1
+netmask 255.255.255.0
 ~~~
 
 - MALANG (*DNS Server*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 10.151.79.130
+netmask 255.255.255.248
+gateway 10.151.79.129
 ~~~
 
 - MOJOKERTO (*DHCP Server*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 10.151.79.131
+netmask 255.255.255.248
+gateway 10.151.79.129
 ~~~
 
 - MADIUN (*Web Server*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 192.168.0.10
+netmask 255.255.255.248
+gateway 192.168.0.9
 ~~~
 
 - PROBOLINGGO (*Web Server*)
 ~~~
+auto eth0
+iface eth0 inet static
+address 192.168.0.11
+netmask 255.255.255.248
+gateway 192.168.0.9
 ~~~
 
 - SIDOARJO (*Client*)
 ~~~
+auto eth0
+iface eth0 inet dhcp
 ~~~
 
 - GRESIK (*Client*)
 ~~~
+auto eth0
+iface eth0 inet dhcp
 ~~~
 
-6. Melakukan routing pada router, lakukan `ping` pada masing-masing UML untuk mengetes apakah setiap UML sudah terkoneksi.
+6. Melakukan routing pada router SURABAYA, KEDIRI, dan BATU. Semua konfigurasi untuk routing disimpan dalam file `route.sh` agar ketika ingin mengakses UML kembali dapat dilakukan dengan pemanggilan `bash route.sh`, jika ingin melihat list routing yang ada dapat dilakukan dengan cara `route -n`.
 - SURABAYA
 ~~~
+route add -net 10.151.79.128 netmask 255.255.255.248 gw 192.168.6.2
+route add -net 192.168.1.0 netmask 255.255.255.0 gw 192.168.6.2
+route add -net 192.168.2.0 netmask 255.255.255.0 gw 192.168.0.6
+route add -net 192.168.0.8 netmask 255.255.255.248 gw 192.168.0.6
 ~~~
 
 - KEDIRI
 ~~~
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.168.0.5
 ~~~
 
 - BATU
 ~~~
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.168.6.1
 ~~~
 
-7. Mengatur DHCP Server dan DHCP Relay yang akan digunakan untuk memberikan IP pada Client.
+7. Melakukan `ping` pada masing-masing UML untuk mengetes apakah setiap UML sudah terkoneksi.
+
+
+8. Mengatur DHCP Server dan DHCP Relay yang akan digunakan untuk memberikan IP pada Client.
 - Pada MOJOKERTO lakukan `install isc-dhcp-server`, kemudian atur konfigurasinya sebagai berikut:
 - Pada BATU dan KEDIRI lakukan `install isc-dhcp-relay`, kemudian atur konfigurasinya sebagai berikut:
 - Lakukan `service isc-dhcp-server restart` pada MOJOKERTO dan `service isc-dhcp-relay restart` pada BATU dan KEDIRI.
@@ -153,24 +230,30 @@ iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j SNAT --to-source 10.
 
 2. Drop semua akses SSH yang berasal dari luar topologi pada server yang memiliki IP DMZ, iptables diatur di SURABAYA.
 ~~~
+
 ~~~
 
 3. DHCP dan DNS Server hanya boleh menerima 3 koneksi ICMP secara bersamaan yang berasal dari mana saja dan selebihnya di DROP, iptables diatur di masing-masing server.
 ~~~
+
 ~~~
 
 4. Akses ke MALANG dari SIDOARJO hanya diperbolehkan pada pukul 07.00 - 17.00 pada hari Senin sampai Jumat, selain itu paket akan di `REJECT`.
 ~~~
+
 ~~~
 
 5. Akses ke MALANG dari GRESIK hanya diperbolehkan pada pukul 17.00 hingga pukul 07.00 setiap harinya, selain itu paket akan di `REJECT`.
 ~~~
+
 ~~~
 
 6. Setting Router SURABAYA agar setiap *request* dari *client* yang mengakses DNS Server akan didistribusikan secara bergantian pada PROBOLINGGO port 80 dan MADIUN port 80.
 ~~~
+
 ~~~
 
 7. Semua paket yang di-drop oleh *firewall* (dalam topologi) tercatat dalam log pada setiap UML yang memiliki aturan drop.
 ~~~
+
 ~~~ 
