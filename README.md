@@ -76,7 +76,7 @@ uml_mconsole GRESIK halt
 | **Total**  | **419**  | **/22** |
 
 3. Membuat pohon untuk membagi subnet.
-![pohon](https://github.com/liizzasulistio/Jarkom_Modul5_Lapres_D15/blob/main/screenshot/pohon.png)
+![pohon]()
 
 4. Mendapatkan IP masing-masing subnet.
 
