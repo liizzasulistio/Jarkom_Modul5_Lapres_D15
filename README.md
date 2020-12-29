@@ -244,7 +244,10 @@ iptables -A FORWARD -i eth0 -d 10.151.79.131 -p tcp --destination-port 22 -j DRO
 
 3. DHCP dan DNS Server hanya boleh menerima 3 koneksi ICMP secara bersamaan yang berasal dari mana saja dan selebihnya di DROP, iptables diatur di masing-masing server.
 ~~~
-
+iptables -N NO3
+iptables -A NO3 -j LOG --log-level 6
+iptables -A NO3 -j DROP
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 4 --connlimit-masl 0 -j NO3
 ~~~
 
 4. Akses ke MALANG dari SIDOARJO hanya diperbolehkan pada pukul 07.00 - 17.00 pada hari Senin sampai Jumat, selain itu paket akan di `REJECT`.
