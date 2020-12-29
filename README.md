@@ -218,7 +218,13 @@ route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.168.6.1
 
 8. Mengatur DHCP Server dan DHCP Relay yang akan digunakan untuk memberikan IP pada Client.
 - Pada MOJOKERTO lakukan `install isc-dhcp-server`, kemudian atur konfigurasinya sebagai berikut:
+~~~
+~~~
+
 - Pada BATU dan KEDIRI lakukan `install isc-dhcp-relay`, kemudian atur konfigurasinya sebagai berikut:
+~~~
+~~~
+
 - Lakukan `service isc-dhcp-server restart` pada MOJOKERTO dan `service isc-dhcp-relay restart` pada BATU dan KEDIRI.
 - Lakukan `service networking restart` pada SIDOARJO dan GRESIK, kemudian cek IP Address dengan menggunakan `ifconfig`.
 9. Mengatur DNS Server.
