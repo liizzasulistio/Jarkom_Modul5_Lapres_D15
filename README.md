@@ -101,16 +101,41 @@ uml_mconsole GRESIK halt
 ~~~
 
 - MALANG (*DNS Server*)
+~~~
+~~~
+
 - MOJOKERTO (*DHCP Server*)
+~~~
+~~~
+
 - MADIUN (*Web Server*)
+~~~
+~~~
+
 - PROBOLINGGO (*Web Server*)
+~~~
+~~~
+
 - SIDOARJO (*Client*)
+~~~
+~~~
+
 - GRESIK (*Client*)
+~~~
+~~~
 
 6. Melakukan routing pada router, lakukan `ping` pada masing-masing UML untuk mengetes apakah setiap UML sudah terkoneksi.
 - SURABAYA
+~~~
+~~~
+
 - KEDIRI
+~~~
+~~~
+
 - BATU
+~~~
+~~~
 
 7. Mengatur DHCP Server dan DHCP Relay yang akan digunakan untuk memberikan IP pada Client.
 - Pada MOJOKERTO lakukan `install isc-dhcp-server`, kemudian atur konfigurasinya sebagai berikut:
@@ -133,3 +158,19 @@ iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j SNAT --to-source 10.
 3. DHCP dan DNS Server hanya boleh menerima 3 koneksi ICMP secara bersamaan yang berasal dari mana saja dan selebihnya di DROP, iptables diatur di masing-masing server.
 ~~~
 ~~~
+
+4. Akses ke MALANG dari SIDOARJO hanya diperbolehkan pada pukul 07.00 - 17.00 pada hari Senin sampai Jumat, selain itu paket akan di `REJECT`.
+~~~
+~~~
+
+5. Akses ke MALANG dari GRESIK hanya diperbolehkan pada pukul 17.00 hingga pukul 07.00 setiap harinya, selain itu paket akan di `REJECT`.
+~~~
+~~~
+
+6. Setting Router SURABAYA agar setiap *request* dari *client* yang mengakses DNS Server akan didistribusikan secara bergantian pada PROBOLINGGO port 80 dan MADIUN port 80.
+~~~
+~~~
+
+7. Semua paket yang di-drop oleh *firewall* (dalam topologi) tercatat dalam log pada setiap UML yang memiliki aturan drop.
+~~~
+~~~ 
