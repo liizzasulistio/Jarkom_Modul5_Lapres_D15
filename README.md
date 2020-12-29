@@ -20,6 +20,8 @@
 ---
 ## Persiapan
 
+![topologi1](https://github.com/liizzasulistio/Jarkom_Modul5_Lapres_D15/blob/main/screenshot/topologi_1.png)
+![topologi2](https://github.com/liizzasulistio/Jarkom_Modul5_Lapres_D15/blob/main/screenshot/topologi_2.png)
 
 1. Konfigurasi topologi.sh dan bye.sh sesuai dengan gambar topologi yang diberikan.
 - Topologi
@@ -74,7 +76,7 @@ uml_mconsole GRESIK halt
 | **Total**  | **419**  | **/22** |
 
 3. Membuat pohon untuk membagi subnet.
-
+![pohon](https://github.com/liizzasulistio/Jarkom_Modul5_Lapres_D15/blob/main/screenshot/pohon.png)
 
 4. Mendapatkan IP masing-masing subnet.
 
